@@ -680,7 +680,7 @@ func (o *OrchestratorProfile) IsDCOS() bool {
 func (o *OrchestratorProfile) IsAzureCNI() bool {
 	switch o.OrchestratorType {
 	case Kubernetes:
-		return o.KubernetesConfig.NetworkPolicy == "azure"
+		return o.KubernetesConfig.NetworkPolicy == "azure" || o.KubernetesConfig.NetworkPolicy == "calico"
 	default:
 		return false
 	}

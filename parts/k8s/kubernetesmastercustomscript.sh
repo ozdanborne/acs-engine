@@ -218,8 +218,10 @@ function configAzureNetworkPolicy() {
     tar -xzf $CONTAINERNETWORKING_CNI_TGZ_TMP -C $CNI_BIN_DIR ./loopback ./portmap
     chown -R root:root $CNI_BIN_DIR
     chmod -R 755 $CNI_BIN_DIR
-    mv $CNI_BIN_DIR/10-azure.conflist $CNI_CONFIG_DIR/
-    chmod 600 $CNI_CONFIG_DIR/10-azure.conflist
+    if [[ "${NETWORK_POLICY}" = "azure" ]]; then
+        mv $CNI_BIN_DIR/10-azure.conflist $CNI_CONFIG_DIR/
+        chmod 600 $CNI_CONFIG_DIR/10-azure.conflist
+    fi
     /sbin/ebtables -t nat --list
 	configCNINetworkPolicy
 }
@@ -230,9 +232,9 @@ function configCNINetworkPolicy() {
 }
 
 function configNetworkPolicy() {
-    if [[ "${NETWORK_POLICY}" = "azure" ]]; then
+    if [[ "${NETWORK_POLICY}" = "azure" ]] || [[ "${NETWORK_POLICY}" = "calico" ]]; then
         configAzureNetworkPolicy
-    elif [[ "${NETWORK_POLICY}" = "calico" ]] || [[ "${NETWORK_POLICY}" = "cilium" ]]; then
+    elif [[ "${NETWORK_POLICY}" = "cilium" ]]; then
         configCNINetworkPolicy
     else
         # No policy, defaults to kubenet.
