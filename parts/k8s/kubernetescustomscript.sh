@@ -183,8 +183,10 @@ function configAzureCNI() {
     tar -xzf $CONTAINERNETWORKING_CNI_TGZ_TMP -C $CNI_BIN_DIR ./loopback ./portmap
     chown -R root:root $CNI_BIN_DIR
     chmod -R 755 $CNI_BIN_DIR
-    mv $CNI_BIN_DIR/10-azure.conflist $CNI_CONFIG_DIR/
-    chmod 600 $CNI_CONFIG_DIR/10-azure.conflist
+    if [[ "${NETWORK_POLICY}" = "azure" ]]; then
+        mv $CNI_BIN_DIR/10-azure.conflist $CNI_CONFIG_DIR/
+        chmod 600 $CNI_CONFIG_DIR/10-azure.conflist
+    fi
     /sbin/ebtables -t nat --list
 }
 
@@ -199,7 +201,7 @@ function configKubenet() {
 }
 
 function configNetworkPolicy() {
-    if [[ "${NETWORK_POLICY}" = "azure" ]]; then
+    if [[ "${NETWORK_POLICY}" = "azure" ]] || [[ "${NETWORK_POLICY}" = "calico" ]]; then
         configAzureCNI
     elif [[ "${NETWORK_POLICY}" = "none" ]] ; then
         configKubenet
