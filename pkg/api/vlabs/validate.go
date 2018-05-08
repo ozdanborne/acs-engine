@@ -46,6 +46,10 @@ var (
 			networkPolicy: "calico",
 		},
 		{
+			networkPlugin: "azure",
+			networkPolicy: "calico",
+		},
+		{
 			networkPlugin: "kubenet",
 			networkPolicy: "cilium",
 		},
