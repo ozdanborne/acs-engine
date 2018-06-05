@@ -369,7 +369,7 @@ func setOrchestratorDefaults(cs *api.ContainerService) {
 			o.KubernetesConfig.NetworkPlugin = NetworkPluginKubenet
 			o.KubernetesConfig.NetworkPolicy = DefaultNetworkPolicy
 		case NetworkPolicyCalico:
-			o.KubernetesConfig.NetworkPlugin = NetworkPluginKubenet
+			o.KubernetesConfig.NetworkPlugin = NetworkPluginAzure
 		case NetworkPolicyCilium:
 			o.KubernetesConfig.NetworkPlugin = NetworkPolicyCilium
 		}

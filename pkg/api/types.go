@@ -826,7 +826,7 @@ func (o *OrchestratorProfile) IsAzureCNI() bool {
 func (o *OrchestratorProfile) RequireRouteTable() bool {
 	switch o.OrchestratorType {
 	case Kubernetes:
-		if o.IsAzureCNI() || "cilium" == o.KubernetesConfig.NetworkPolicy {
+		if o.IsAzureCNI() || "cilium" == o.KubernetesConfig.NetworkPolicy || o.KubernetesConfig.NetworkPolicy == "calico" {
 			return false
 		}
 		return true

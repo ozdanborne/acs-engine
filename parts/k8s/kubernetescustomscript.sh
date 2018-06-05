@@ -251,8 +251,10 @@ function configAzureCNI() {
     retrycmd_get_tarball 60 5 $AZURE_CNI_TGZ_TMP ${VNET_CNI_PLUGINS_URL} || exit $ERR_CNI_DOWNLOAD_TIMEOUT
     tar -xzf $AZURE_CNI_TGZ_TMP -C $CNI_BIN_DIR
     installCNI
-    mv $CNI_BIN_DIR/10-azure.conflist $CNI_CONFIG_DIR/
-    chmod 600 $CNI_CONFIG_DIR/10-azure.conflist
+    if [[ "${NETWORK_POLICY}" = "azure" ]]; then
+      mv $CNI_BIN_DIR/10-azure.conflist $CNI_CONFIG_DIR/
+      chmod 600 $CNI_CONFIG_DIR/10-azure.conflist
+    fi
     /sbin/ebtables -t nat --list
 }
 
